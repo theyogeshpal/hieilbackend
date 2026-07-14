@@ -69,7 +69,7 @@ app.post('/api/trigger-seed', async (req, res) => {
   }
   
   try {
-    const { runSeeder } = require('../../seed.js');
+    const { runSeeder } = require('../seed.js');
     await runSeeder();
     res.status(200).json({ message: 'Database seeded successfully via API!' });
   } catch (error) {
