@@ -1,0 +1,35 @@
+const express = require('express');
+const router = express.Router();
+
+router.get('/stats', async (req, res) => {
+  try {
+    const [
+      categories, products, orders, blogs, payments, invoices
+    ] = await Promise.all([
+      require('../models/Category').countDocuments(),
+      require('../models/Product').countDocuments(),
+      require('../models/Order').countDocuments(),
+      require('../models/Blog').countDocuments(),
+      require('../models/Payment').find(),
+      require('../models/Invoice').find(),
+    ]);
+
+    const revenue = payments.reduce((sum, p) => {
+      const amt = parseFloat(String(p.amount || '0').replace(/[^0-9.]/g, '')) || 0;
+      return sum + amt;
+    }, 0);
+
+    const avgRate = orders > 0 ? Math.round(revenue / orders) : 0;
+
+    res.json({ categories, products, orders, blogs, revenue, avgRate });
+  } catch (e) { res.status(500).json({ message: e.message }); }
+});
+
+router.get('/latest-orders', async (req, res) => {
+  try {
+    const orders = await require('../models/Order').find().sort({ createdAt: -1 }).limit(5);
+    res.json(orders);
+  } catch (e) { res.status(500).json({ message: e.message }); }
+});
+
+module.exports = router;
