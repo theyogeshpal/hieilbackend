@@ -192,6 +192,39 @@ const seedLeaders = async () => {
   console.log('Leaders seeded successfully');
 };
 
+const seedCertifications = async () => {
+  const Certification = require('./src/models/Certification');
+  await Certification.deleteMany();
+  const certs = [
+    {
+      title: 'Importer Exporter Code',
+      subtitle: 'IEC Certificate',
+      description: 'Officially registered with DGFT for international trade operations.',
+      icon: 'FileCheck2'
+    },
+    {
+      title: 'PAN Card',
+      subtitle: 'Tax Identity',
+      description: 'Permanent Account Number issued by the Income Tax Department of India.',
+      icon: 'Landmark'
+    },
+    {
+      title: 'Udyam Registration',
+      subtitle: 'MSME Certified',
+      description: 'Recognized as a Micro, Small & Medium Enterprise by Govt. of India.',
+      icon: 'BadgeCheck'
+    },
+    {
+      title: 'Income Tax (ITR)',
+      subtitle: 'Tax Compliance',
+      description: 'Fully compliant with Indian taxation laws and annual return filings.',
+      icon: 'ShieldCheck'
+    }
+  ];
+  await Certification.insertMany(certs);
+  console.log('Certifications seeded successfully');
+};
+
 const runSeeder = async () => {
   await seedAdmin();
   await seedCategories();
@@ -200,6 +233,7 @@ const runSeeder = async () => {
   await seedTestimonials();
   await seedBlogs();
   await seedLeaders();
+  await seedCertifications();
   
   console.log('Data seeding completed!');
 };
