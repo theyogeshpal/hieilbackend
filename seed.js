@@ -226,7 +226,7 @@ const seedCertifications = async () => {
 };
 
 const seedFaqs = async () => {
-  const FAQ = require('./src/models/Faq');
+  const FAQ = require('./src/models/FAQ');
   await FAQ.deleteMany();
   const faqs = [
     { question: 'Company Overview', answer: 'We are a company that sends a lot of Indian handicrafts to other countries. We want to keep the ways of making things alive while making sure our products are good enough for people all around the world to buy. Indian handicrafts are very important to us. We want people to know that we are serious, about Indian handicrafts.' },
