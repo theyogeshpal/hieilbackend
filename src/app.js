@@ -29,6 +29,7 @@ app.use('/api/gallery-categories', require('./routes/galleryCategories'));
 app.use('/api/inquiries', require('./routes/inquiries'));
 app.use('/api/orders', require('./routes/orders'));
 app.use('/api/quotations', require('./routes/quotations'));
+app.use('/api/quotation-email', require('./routes/quotationRoutes'));
 app.use('/api/invoices', require('./routes/invoices'));
 app.use('/api/payments', require('./routes/payments'));
 app.use('/api/shipping', require('./routes/shipping'));
