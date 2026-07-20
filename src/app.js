@@ -11,7 +11,8 @@ app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 app.use('/api/uploads', express.static(path.join(__dirname, '../uploads')));
-
+app.use('/api-v1/uploads', express.static(path.join(__dirname, '../uploads')));
+app.use('/api-v1/api/uploads', express.static(path.join(__dirname, '../uploads')));
 // Health check route
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
