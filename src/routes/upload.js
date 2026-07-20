@@ -27,9 +27,13 @@ router.post('/', upload.single('file'), (req, res) => {
     return res.status(400).json({ message: 'No file uploaded' });
   }
   
-  // Return the full URL of the uploaded image. We assume the server is running on the same host but port 5000 (standard backend port). 
-  // Alternatively, return just the path and let the frontend prefix it. We'll return the path.
-  const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+  const host = req.get('host');
+  const protocol = req.headers['x-forwarded-proto'] || req.protocol;
+  const baseUrl = host.includes('hieil.com') 
+    ? `https://api.hieil.com/api-v1/api`
+    : `${protocol}://${host}`;
+    
+  const fileUrl = `${baseUrl}/uploads/${req.file.filename}`;
   res.json({ url: fileUrl });
 });
 
