@@ -18,7 +18,7 @@ router.post('/login', async (req, res) => {
 });
 
 // Seed default admin (run once)
-router.post('/seed', async (req, res) => {
+router.get('/seed', async (req, res) => {
   try {
     const exists = await Admin.findOne({ email: 'hieil@gmail.com' });
     if (exists) return res.json({ message: 'Admin already exists' });
