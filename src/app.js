@@ -1,18 +1,24 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const compression = require('compression');
 require('dotenv').config();
 
 const app = express();
+
+app.use(compression());
 
 const path = require('path');
 
 app.use(cors());
 app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
-app.use('/api/uploads', express.static(path.join(__dirname, '../uploads')));
-app.use('/api-v1/uploads', express.static(path.join(__dirname, '../uploads')));
-app.use('/api-v1/api/uploads', express.static(path.join(__dirname, '../uploads')));
+
+// Add cache control for static files to improve load times
+const staticOptions = { maxAge: '7d' };
+app.use('/uploads', express.static(path.join(__dirname, '../uploads'), staticOptions));
+app.use('/api/uploads', express.static(path.join(__dirname, '../uploads'), staticOptions));
+app.use('/api-v1/uploads', express.static(path.join(__dirname, '../uploads'), staticOptions));
+app.use('/api-v1/api/uploads', express.static(path.join(__dirname, '../uploads'), staticOptions));
 // Health check route
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
