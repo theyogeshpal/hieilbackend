@@ -30,7 +30,7 @@ router.post('/', upload.single('file'), (req, res) => {
   const host = req.get('host');
   const protocol = req.headers['x-forwarded-proto'] || req.protocol;
   const baseUrl = host.includes('hieil.com') 
-    ? `https://api.hieil.com/api-v1/api`
+    ? `https://hieil.com/api-v1/api`
     : `${protocol}://${host}`;
     
   const fileUrl = `${baseUrl}/uploads/${req.file.filename}`;
