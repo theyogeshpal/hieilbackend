@@ -6,14 +6,14 @@ const crudRouter = (Model) => {
 
   router.get('/', async (req, res) => {
     try {
-      const docs = await Model.find().sort({ createdAt: -1 });
+      const docs = await Model.find().sort({ createdAt: -1 }).lean();
       res.json(docs);
     } catch (e) { res.status(500).json({ message: e.message }); }
   });
 
   router.get('/:id', async (req, res) => {
     try {
-      const doc = await Model.findById(req.params.id);
+      const doc = await Model.findById(req.params.id).lean();
       if (!doc) return res.status(404).json({ message: 'Not found' });
       res.json(doc);
     } catch (e) { res.status(500).json({ message: e.message }); }
@@ -38,6 +38,15 @@ const crudRouter = (Model) => {
     try {
       const doc = await Model.findByIdAndDelete(req.params.id);
       if (!doc) return res.status(404).json({ message: 'Not found' });
+      res.json({ message: 'Deleted successfully' });
+    } catch (e) { res.status(500).json({ message: e.message }); }
+  });
+
+  router.post('/bulk-delete', async (req, res) => {
+    try {
+      const { ids } = req.body;
+      if (!Array.isArray(ids) || ids.length === 0) return res.status(400).json({message: 'No IDs provided'});
+      await Model.deleteMany({ _id: { $in: ids } });
       res.json({ message: 'Deleted successfully' });
     } catch (e) { res.status(500).json({ message: e.message }); }
   });
