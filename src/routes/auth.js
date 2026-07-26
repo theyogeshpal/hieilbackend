@@ -14,7 +14,7 @@ router.post('/login', async (req, res) => {
     const isMatch = await bcrypt.compare(password, admin.password);
     if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
     const token = jwt.sign({ id: admin._id, email: admin.email, role: admin.role }, process.env.JWT_SECRET, { expiresIn: '7d' });
-    res.json({ token, admin: { id: admin._id, name: admin.name, email: admin.email, role: admin.role } });
+    res.json({ token, admin: { id: admin._id, name: admin.name, email: admin.email, role: admin.role, permissions: admin.permissions || {} } });
   } catch (e) { res.status(500).json({ message: e.message }); }
 });
 
@@ -45,7 +45,7 @@ router.put('/update-credentials', authMiddleware, async (req, res) => {
     if (email) admin.email = email;
     
     await admin.save();
-    res.json({ message: 'Credentials updated successfully', admin: { id: admin._id, name: admin.name, email: admin.email, role: admin.role } });
+    res.json({ message: 'Credentials updated successfully', admin: { id: admin._id, name: admin.name, email: admin.email, role: admin.role, permissions: admin.permissions || {} } });
   } catch (e) { res.status(500).json({ message: e.message }); }
 });
 
