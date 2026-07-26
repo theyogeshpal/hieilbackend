@@ -28,17 +28,21 @@ router.post('/', upload.single('file'), async (req, res) => {
     
   try {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const filename = `${uniqueSuffix}.webp`;
-    const filepath = path.join(uploadDir, filename);
+    let filename = '';
 
     // If it's an image, resize and convert to webp
     if (req.file.mimetype.startsWith('image/')) {
+      filename = `${uniqueSuffix}.webp`;
+      const filepath = path.join(uploadDir, filename);
       await sharp(req.file.buffer)
         .resize(1920, 1920, { fit: 'inside', withoutEnlargement: true })
         .webp({ quality: 80 })
         .toFile(filepath);
     } else {
-      // For non-images (like pdfs), just write the buffer directly
+      // For non-images (like pdfs), use original extension
+      const ext = path.extname(req.file.originalname) || '.pdf';
+      filename = `${uniqueSuffix}${ext}`;
+      const filepath = path.join(uploadDir, filename);
       fs.writeFileSync(filepath, req.file.buffer);
     }
     
