@@ -4,14 +4,13 @@ const router = express.Router();
 router.get('/stats', async (req, res) => {
   try {
     const [
-      categories, products, orders, blogs, payments, invoices
+      categories, products, orders, blogs, payments
     ] = await Promise.all([
       require('../models/Category').countDocuments(),
       require('../models/Product').countDocuments(),
       require('../models/Order').countDocuments(),
       require('../models/Blog').countDocuments(),
-      require('../models/Payment').find(),
-      require('../models/Invoice').find(),
+      require('../models/Payment').find({}, { amount: 1 }).lean()
     ]);
 
     const revenue = payments.reduce((sum, p) => {
@@ -43,7 +42,7 @@ router.get('/reports', async (req, res) => {
       require('../models/Order').countDocuments(),
       require('../models/Invoice').countDocuments({ status: { $in: ['Pending', 'Unpaid', 'pending'] } }),
       require('../models/VendorPayout').countDocuments({ status: { $in: ['Hold', 'Pending', 'pending', 'hold'] } }),
-      require('../models/Payment').find(),
+      require('../models/Payment').find({}, { amount: 1 }).lean(),
       require('../models/Shipping').countDocuments(),
       require('../models/Shipping').countDocuments({ status: { $regex: /in transit/i } }),
       require('../models/Shipping').countDocuments({ status: { $regex: /delivered/i } })
