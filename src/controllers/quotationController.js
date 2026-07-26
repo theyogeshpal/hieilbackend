@@ -47,19 +47,19 @@ const sendQuotation = async (req, res) => {
               </tr>
               <tr>
                 <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #64748b; font-weight: bold;">Rate (per unit)</td>
-                <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #0f172a; font-weight: 500;">₹${rate}</td>
+                <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #0f172a; font-weight: 500;">$${rate}</td>
               </tr>
               <tr>
                 <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #64748b; font-weight: bold;">Subtotal</td>
-                <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #0f172a; font-weight: 500;">₹${subtotal}</td>
+                <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #0f172a; font-weight: 500;">$${subtotal}</td>
               </tr>
               <tr>
                 <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #64748b; font-weight: bold;">GST (${gstPercent}%)</td>
-                <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #0f172a; font-weight: 500;">₹${gstAmount}</td>
+                <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #0f172a; font-weight: 500;">$${gstAmount}</td>
               </tr>
               <tr style="background-color: #f8fafc;">
                 <td style="padding: 15px 12px; border-bottom: 2px solid #cbd5e1; color: #0f172a; font-weight: bold; font-size: 16px;">Total Amount</td>
-                <td style="padding: 15px 12px; border-bottom: 2px solid #cbd5e1; color: #22c55e; font-weight: bold; font-size: 18px;">₹${totalAmount}</td>
+                <td style="padding: 15px 12px; border-bottom: 2px solid #cbd5e1; color: #22c55e; font-weight: bold; font-size: 18px;">$${totalAmount}</td>
               </tr>
             </tbody>
           </table>
