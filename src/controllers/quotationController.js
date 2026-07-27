@@ -1,4 +1,5 @@
 const sendEmail = require('../utils/sendEmail');
+const Quotation = require('../models/Quotation');
 
 const sendQuotation = async (req, res) => {
   try {
@@ -19,6 +20,29 @@ const sendQuotation = async (req, res) => {
     if (!customerEmail) {
       return res.status(400).json({ success: false, message: 'Customer Email is required to send the quotation.' });
     }
+
+    // Generate Quote No
+    const quoteNo = 'QT-' + Date.now().toString().slice(-6);
+
+    // Save to Database
+    const quotation = new Quotation({
+      quoteNo,
+      customer: customerName,
+      customerEmail,
+      country,
+      product,
+      qty: quantity,
+      rate,
+      gstPercent,
+      subtotal,
+      gstAmount,
+      total: totalAmount,
+      validTill,
+      status: 'Sent',
+      type: 'inquiry'
+    });
+    
+    await quotation.save();
 
     // Create a beautiful HTML email template
     const htmlTemplate = `

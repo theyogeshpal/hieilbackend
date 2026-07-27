@@ -2,12 +2,18 @@ const mongoose = require('mongoose');
 const schema = new mongoose.Schema({
   quoteNo: String,
   customer: String,
+  customerEmail: String,
   mobile: String,
   country: String,
   product: String,
   qty: String,
-  budget: String,
+  rate: String,
+  gstPercent: String,
+  subtotal: String,
+  gstAmount: String,
   total: String,
+  budget: String,
+  validTill: String,
   status: { type: String, default: 'Sent' },
   type: { type: String, enum: ['inquiry', 'retailer'], default: 'inquiry' }
 }, { timestamps: true });
