@@ -5,6 +5,7 @@ const schema = new mongoose.Schema({
   email: String,
   phone: String,
   location: String,
-  message: String
+  message: String,
+  document: String
 }, { timestamps: true });
 module.exports = mongoose.model('ServiceInquiry', schema);
