@@ -5,6 +5,7 @@ const sendQuotation = async (req, res) => {
     const { 
       customerName, 
       customerEmail,
+      mobile,
       product, 
       quantity, 
       country, 
@@ -13,6 +14,7 @@ const sendQuotation = async (req, res) => {
       subtotal, 
       gstAmount, 
       totalAmount, 
+      budget,
       validTill 
     } = req.body;
 
@@ -24,6 +26,7 @@ const sendQuotation = async (req, res) => {
       quoteNo,
       customer: customerName,
       customerEmail,
+      mobile,
       country,
       product,
       qty: quantity,
@@ -32,6 +35,7 @@ const sendQuotation = async (req, res) => {
       subtotal,
       gstAmount,
       total: totalAmount,
+      budget,
       validTill,
       status: 'Sent',
       type: 'inquiry'
