@@ -6,6 +6,7 @@ const schema = new mongoose.Schema({
   customer: String,
   country: String,
   address: { type: String, default: '' },
+  products: { type: Array, default: [] },
   type: { type: String, enum: ['inquiry', 'retailer'], default: 'inquiry' }
 }, { timestamps: true });
 module.exports = mongoose.model('Order', schema);
