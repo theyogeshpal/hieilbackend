@@ -14,6 +14,7 @@ const schema = new mongoose.Schema({
   total: String,
   budget: String,
   validTill: String,
+  address: { type: String, default: '' },
   status: { type: String, default: 'Sent' },
   type: { type: String, enum: ['inquiry', 'retailer'], default: 'inquiry' }
 }, { timestamps: true });

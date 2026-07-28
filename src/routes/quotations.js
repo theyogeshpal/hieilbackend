@@ -39,6 +39,7 @@ router.put('/:id', async (req, res) => {
         status: 'Processing',
         customer: existing.customer,
         country: existing.country,
+        address: req.body.address || existing.address || '',
         type: existing.type
       });
     }
