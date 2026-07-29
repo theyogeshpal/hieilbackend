@@ -11,6 +11,14 @@ router.get('/', async (req, res) => {
   } catch (e) { res.status(500).json({ message: e.message }); }
 });
 
+router.get('/by-inquiry/:id', async (req, res) => {
+  try {
+    const doc = await Quotation.findOne({ inquiryId: req.params.id }).lean();
+    if (!doc) return res.status(404).json({ message: 'Not found' });
+    res.json(doc);
+  } catch (e) { res.status(500).json({ message: e.message }); }
+});
+
 router.get('/:id', async (req, res) => {
   try {
     const doc = await Quotation.findById(req.params.id).lean();

@@ -15,6 +15,8 @@ const schema = new mongoose.Schema({
   shipping: String,
   message: String,
   deliveryDate: String,
+  quotationId: String,
+  quoteNo: String,
   type: { type: String, enum: ['inquiry', 'retailer'], default: 'inquiry' }
 }, { timestamps: true });
 module.exports = mongoose.model('Inquiry', schema);

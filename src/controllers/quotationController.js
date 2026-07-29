@@ -15,7 +15,8 @@ const sendQuotation = async (req, res) => {
       gstAmount, 
       totalAmount, 
       budget,
-      validTill 
+      validTill,
+      inquiryId 
     } = req.body;
 
     // Generate Quote No
@@ -37,13 +38,23 @@ const sendQuotation = async (req, res) => {
       total: totalAmount,
       budget,
       validTill,
+      inquiryId,
       status: 'Sent',
       type: 'inquiry'
     });
     
     await quotation.save();
 
-    res.status(200).json({ success: true, message: 'Quotation generated and saved successfully.', quoteNo });
+    // Update Inquiry if inquiryId is provided
+    if (inquiryId) {
+      const Inquiry = require('../models/Inquiry');
+      await Inquiry.findByIdAndUpdate(inquiryId, {
+        quotationId: quotation._id,
+        quoteNo: quoteNo
+      });
+    }
+
+    res.status(200).json({ success: true, message: 'Quotation generated and saved successfully.', quoteNo, quotationId: quotation._id });
   } catch (error) {
     console.error('Create Quotation Error:', error);
     res.status(500).json({ success: false, message: 'Failed to create quotation. ' + error.message });
