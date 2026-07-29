@@ -6,6 +6,7 @@ const schema = new mongoose.Schema({
   country: String,
   total: String,
   status: { type: String, default: 'Pending' },
-  type: { type: String, enum: ['inquiry', 'retailer'], default: 'inquiry' }
+  type: { type: String, enum: ['inquiry', 'retailer'], default: 'inquiry' },
+  vendorId: { type: mongoose.Schema.Types.ObjectId, ref: 'Vendor' }
 }, { timestamps: true });
 module.exports = mongoose.model('Invoice', schema);
