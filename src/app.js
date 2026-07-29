@@ -50,6 +50,7 @@ app.use('/api/service-inquiries', require('./routes/serviceInquiries'));
 app.use('/api/download-leads', require('./routes/downloadLeads'));
 app.use('/api/vendors', require('./routes/vendors'));
 app.use('/api/vendor-payouts', require('./routes/vendorPayouts'));
+app.use('/api/vendor-management/report', require('./routes/vendorReport'));
 app.use('/api/custom-products', require('./routes/customProducts'));
 app.use('/api/wholesale-categories', require('./routes/wholesaleCategories'));
 app.use('/api/brands', require('./routes/brands'));
