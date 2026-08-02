@@ -22,6 +22,36 @@ const crudRouter = (Model) => {
   router.post('/', async (req, res) => {
     try {
       const doc = await Model.create(req.body);
+      
+      // Create notification for enquiry models
+      const enquiryModels = ['Inquiry', 'Contact', 'ServiceInquiry', 'ProductCQ', 'BulkFmoq', 'Feedback', 'DownloadLead'];
+      if (enquiryModels.includes(Model.modelName)) {
+        try {
+          const Notification = require('../models/Notification');
+          let name = req.body.name || req.body.firstName || req.body.fullName || 'Someone';
+          let title = `New ${Model.modelName}`;
+          let message = `${name} submitted a new ${Model.modelName.toLowerCase()}.`;
+          
+          let link = '/admin/dashboard';
+          if (Model.modelName === 'Inquiry') link = '/admin/inquiries';
+          if (Model.modelName === 'Contact') link = '/admin/contact';
+          if (Model.modelName === 'ServiceInquiry') link = '/admin/service-inquiries';
+          if (Model.modelName === 'ProductCQ') link = '/admin/product-cq';
+          if (Model.modelName === 'BulkFmoq') link = '/admin/bulk-fmoq';
+          if (Model.modelName === 'Feedback') link = '/admin/feedback';
+          if (Model.modelName === 'DownloadLead') link = '/admin/download-leads';
+          
+          await Notification.create({
+            modelName: Model.modelName,
+            title,
+            message,
+            link
+          });
+        } catch (notifErr) {
+          console.error('Failed to create notification:', notifErr);
+        }
+      }
+
       res.status(201).json(doc);
     } catch (e) { res.status(400).json({ message: e.message }); }
   });

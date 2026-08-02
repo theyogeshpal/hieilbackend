@@ -75,6 +75,7 @@ app.use('/api/blog-fdgw', require('./routes/blogFdgw'));
 app.use('/api/dashboard', require('./routes/dashboard'));
 app.use('/api/upload', require('./routes/upload'));
 app.use('/api/settings', require('./routes/settings'));
+app.use('/api/notifications', require('./routes/notifications'));
 
 // Seed Route
 app.post('/api/trigger-seed', async (req, res) => {
