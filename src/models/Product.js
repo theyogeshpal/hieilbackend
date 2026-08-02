@@ -23,6 +23,7 @@ const schema = new mongoose.Schema({
   addImg5: String,
   description: String,
   craftsmanship: String,
-  shipping: String
+  shipping: String,
+  careInstructions: String
 }, { timestamps: true });
 module.exports = mongoose.model('Product', schema);
