@@ -28,18 +28,43 @@ const crudRouter = (Model) => {
       if (enquiryModels.includes(Model.modelName)) {
         try {
           const Notification = require('../models/Notification');
-          let name = req.body.name || req.body.firstName || req.body.fullName || 'Someone';
+          let name = req.body.name || req.body.firstName || req.body.fullName || req.body.customerName || 'Someone';
           let title = `New ${Model.modelName}`;
           let message = `${name} submitted a new ${Model.modelName.toLowerCase()}.`;
-          
           let link = '/admin/dashboard';
-          if (Model.modelName === 'Inquiry') link = '/admin/inquiries';
-          if (Model.modelName === 'Contact') link = '/admin/contact';
-          if (Model.modelName === 'ServiceInquiry') link = '/admin/service-inquiries';
-          if (Model.modelName === 'ProductCQ') link = '/admin/product-cq';
-          if (Model.modelName === 'BulkFmoq') link = '/admin/bulk-fmoq';
-          if (Model.modelName === 'Feedback') link = '/admin/feedback';
-          if (Model.modelName === 'DownloadLead') link = '/admin/download-leads';
+
+          if (Model.modelName === 'Inquiry') {
+            title = 'New Product Inquiry';
+            const productInfo = req.body.productName || req.body.product || 'a product';
+            message = `Inquiry from ${name} for ${productInfo}.`;
+            link = '/admin/inquiry-system/product-inquiries';
+          } else if (Model.modelName === 'Contact') {
+            title = 'New Contact Message';
+            message = `Contact message received from ${name}.`;
+            link = '/admin/contact';
+          } else if (Model.modelName === 'ServiceInquiry') {
+            title = 'New Service Inquiry';
+            const serviceName = req.body.service || req.body.subService || 'a service';
+            message = `Service inquiry from ${name} for ${serviceName}.`;
+            link = '/admin/service-inquiries';
+          } else if (Model.modelName === 'ProductCQ') {
+            title = 'New Custom Product Quote';
+            const cat = req.body.category || 'a category';
+            message = `Quote requested by ${name} in ${cat}.`;
+            link = '/admin/product-cq';
+          } else if (Model.modelName === 'BulkFmoq') {
+            title = 'New Bulk/Wholesale Inquiry';
+            message = `Bulk inquiry submitted by ${name}.`;
+            link = '/admin/bulk-fmoq';
+          } else if (Model.modelName === 'Feedback') {
+            title = 'New Customer Feedback';
+            message = `Feedback submitted by ${name}.`;
+            link = '/admin/submissions/feedback';
+          } else if (Model.modelName === 'DownloadLead') {
+            title = 'New Certificate Download';
+            message = `${name} downloaded a certificate.`;
+            link = '/admin/download-leads';
+          }
           
           await Notification.create({
             modelName: Model.modelName,
