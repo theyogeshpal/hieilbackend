@@ -16,6 +16,9 @@ const schema = new mongoose.Schema({
   validTill: String,
   address: { type: String, default: '' },
   inquiryId: String,
+  incoterm: { type: String, default: '' },
+  paymentTerms: { type: String, default: '' },
+  deliveryPort: { type: String, default: '' },
   status: { type: String, default: 'Sent' },
   type: { type: String, enum: ['inquiry', 'retailer'], default: 'inquiry' }
 }, { timestamps: true });
