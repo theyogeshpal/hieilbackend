@@ -14,35 +14,45 @@ router.put('/:id', async (req, res, next) => {
     // Fetch the existing invoice to see if status is changing to 'Paid'
     const invoice = await Invoice.findById(req.params.id);
     if (!invoice) return res.status(404).json({ message: 'Invoice not found' });
-    
-    // Check if status is changing to Paid and it wasn't Paid before
-    if (status === 'Paid' && invoice.status !== 'Paid') {
-      // Determine which vendorId to use (from request body or existing invoice)
-      const vId = vendorId || invoice.vendorId;
+    // If a new vendorId is assigned or already exists, ensure a VendorPayout is created/updated
+    const vId = vendorId || invoice.vendorId;
+    if (vId) {
+      // Find if payout exists for this invoice
+      let payout = await VendorPayout.findOne({ invoiceId: invoice.invoiceNo });
       
-      if (vId) {
-        // Fetch the vendor to get their commission percentage
-        const vendor = await Vendor.findById(vId);
-        if (vendor) {
-          const commPercent = parseFloat(vendor.commission) || 0;
-          const invAmt = parseFloat(invoice.total) || 0;
-          
-          // Calculate payout amount
-          const payoutAmt = (invAmt * commPercent) / 100;
-          
-          // Create Vendor Payout
+      const vendor = await Vendor.findById(vId);
+      if (vendor) {
+        const commPercent = parseFloat(vendor.commission) || 0;
+        const invAmt = parseFloat(invoice.total) || 0;
+        const payoutAmt = (invAmt * commPercent) / 100;
+        
+        let payoutStatus = 'Pending';
+        // If invoice is becoming Paid, or is already Paid, payout becomes Hold (ready for release)
+        if (status === 'Paid' || invoice.status === 'Paid') {
+          payoutStatus = 'Hold';
+        }
+
+        if (payout) {
+          // Update existing payout
+          payout.vendorId = vendor._id;
+          payout.invoiceAmount = invAmt.toFixed(2);
+          payout.commission = commPercent.toString() + '%';
+          payout.payoutAmount = payoutAmt.toFixed(2);
+          payout.status = payoutStatus;
+          await payout.save();
+        } else {
+          // Create new payout
           await VendorPayout.create({
             invoiceId: invoice.invoiceNo,
             invoiceAmount: invAmt.toFixed(2),
             commission: commPercent.toString() + '%',
             payoutAmount: payoutAmt.toFixed(2),
-            status: 'Hold',
+            status: payoutStatus,
             vendorId: vendor._id
           });
         }
       }
     }
-    
     // Forward the request to normal update logic
     next();
   } catch (err) {
